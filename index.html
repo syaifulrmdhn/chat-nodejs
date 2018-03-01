@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Socket io Node js</title>
+	<style media="screen">
+		form{
+			position: absolute;
+			bottom: 0px;
+			width: 100%;
+			background: grey;
+			padding: 20px;
+		}
+		li{
+			padding: 8px;
+		}
+		li:nth-child(odd){
+			background: white;
+			color: grey;
+		}
+		li:nth-child(even){
+			background : grey;
+			color: white;
+		}
+		#text_box{
+			float: left;
+			width: 40%;
+			height: 30px;
+			border: none;
+			margin-left: 10px;
+		}
+		#nama{
+			float: left;
+			width: 20%;
+			height: 30px;
+			border: none;
+		}
+		button{
+			float: left;
+			width: 20%;
+			height: 33px;
+		}
+	</style>
+</head>
+<body>
+
+	<ul id="messages"></ul>
+
+	<form>
+		<input type="text" id="nama" placeholder="nama kamu">
+		<input type="text" id="text_box" placeholder="pesan kamu"> <button> Kirim</button>
+	</form>
+	<script src="/socket.io/socket.io.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script type="text/javascript">
+		var socket = io();
+		var username = '';
+
+		$('form').submit(function(){
+			username = $('#nama').val();
+			socket.emit('newMessage', $('#text_box').val());
+			$('#text_box').val('');
+			return false;
+		});
+		//tampilan
+		socket.on('newMessage', function(msg){
+			$('#messages').append($('<li>').text(username + ' ' +msg + ' || pada' + Date()));
+		});
+	</script>
+</body>
+</html>
